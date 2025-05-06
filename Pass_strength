@@ -1,0 +1,35 @@
+# Create a Python function that evaluates the strength of a password entered by the user. 
+# Implement checks for factors such as length, presence of uppercase and lowercase letters, digits, and special characters.
+
+
+import re
+
+def evaluate_password_strength(password):
+    strength_score = 0
+    criteria = [
+        (len(password) >= 8, "Password length is at least 8 characters."),
+        (any(char.isupper() for char in password), "Password contains uppercase letters."),
+        (any(char.islower() for char in password), "Password contains lowercase letters."),
+        (any(char.isdigit() for char in password), "Password contains digits."),
+        (bool(re.search(r'[!@#$%^&*(),.?":{}|<>]', password)), "Password contains special characters."),
+    ]
+
+    print("\nPassword Strength Evaluation:")
+
+    for condition, message in criteria:
+        if condition:
+            print(f"✔ {message}")
+            strength_score += 1
+        else:
+            print(f"✘ {message}")
+
+    if strength_score == len(criteria):
+        return "Strong Password"
+    elif strength_score >= len(criteria) - 2:
+        return "Moderate Password"
+    else:
+        return "Weak Password"
+
+password = input("Enter your password: ")
+result = evaluate_password_strength(password)
+print(f"\nPassword Strength: {result}")
